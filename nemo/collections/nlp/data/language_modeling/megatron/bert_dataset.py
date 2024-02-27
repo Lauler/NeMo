@@ -82,8 +82,12 @@ class BertDataset(torch.utils.data.Dataset):
         )
 
         # Vocab stuff.
-        self.vocab_id_list = list(tokenizer.ids_to_tokens.keys())
-        self.vocab_id_to_token_dict = tokenizer.ids_to_tokens
+        try:
+            self.vocab_id_list = list(tokenizer.ids_to_tokens.keys())
+            self.vocab_id_to_token_dict = tokenizer.ids_to_tokens
+        except AttributeError:
+            self.vocab_id_list = list(tokenizer.convert_ids_to_tokens.keys())
+            self.vocab_id_to_token_dict = tokenizer.convert_ids_to_tokens
         self.cls_id = tokenizer.cls_token_id
         self.sep_id = tokenizer.sep_token_id
         self.mask_id = tokenizer.mask_token_id

@@ -152,7 +152,7 @@ class Encoder(object):
             if not nltk_available:
                 print("NLTK is not available to split sentences.")
                 exit()
-            splitter = nltk.load("tokenizers/punkt/english.pickle")
+            splitter = nltk.load("tokenizers/punkt/swedish.pickle")
             if self.args.keep_newlines:
                 # this prevents punkt from eating newlines after sentences
                 Encoder.splitter = nltk.tokenize.punkt.PunktSentenceTokenizer(

@@ -15,6 +15,7 @@
 """BERT Style dataset."""
 
 import os
+import collections
 from typing import Any, Optional
 
 import numpy as np
@@ -83,8 +84,11 @@ class BertDataset(torch.utils.data.Dataset):
 
         # Vocab stuff.
 
-        self.vocab_id_list = tokenizer.vocab.keys()
-        self.vocab_id_to_token_dict = tokenizer.vocab
+        self.ids_to_tokens = collections.OrderedDict([(ids, tok) for tok, ids in self.vocab.items()])
+        self.vocab_id_list = list(tokenizer.ids_to_tokens.keys())
+        self.vocab_id_to_token_dict = tokenizer.ids_to_tokens # Ordered dict that has a .get() method
+        # self.vocab_id_list = tokenizer.vocab.values()
+        # self.vocab_id_to_token_dict = collections.OrderedDict([(ids, tok) for tok, ids in self.vocab.items()])
         self.cls_id = tokenizer.cls_token_id
         self.sep_id = tokenizer.sep_token_id
         self.mask_id = tokenizer.mask_token_id

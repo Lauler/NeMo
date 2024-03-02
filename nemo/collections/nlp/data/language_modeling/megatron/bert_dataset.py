@@ -83,10 +83,14 @@ class BertDataset(torch.utils.data.Dataset):
         )
 
         # Vocab stuff.
-
-        self.ids_to_tokens = collections.OrderedDict([(ids, tok) for tok, ids in tokenizer.vocab.items()])
-        self.vocab_id_list = list(tokenizer.ids_to_tokens.keys())
-        self.vocab_id_to_token_dict = tokenizer.ids_to_tokens # Ordered dict that has a .get() method
+        try:
+            self.vocab_id_list = list(tokenizer.ids_to_tokens.keys())
+            self.vocab_id_to_token_dict = tokenizer.ids_to_tokens # Ordered dict that has a .get() method
+        except:
+            tokenizer.ids_to_tokens = collections.OrderedDict([(ids, tok) for tok, ids in tokenizer.vocab.items()])
+            self.vocab_id_list = list(tokenizer.ids_to_tokens.keys())
+            self.vocab_id_to_token_dict = tokenizer.ids_to_tokens # Ordered dict that has a .get() method
+            
         # self.vocab_id_list = tokenizer.vocab.values()
         # self.vocab_id_to_token_dict = collections.OrderedDict([(ids, tok) for tok, ids in self.vocab.items()])
         self.cls_id = tokenizer.cls_token_id
